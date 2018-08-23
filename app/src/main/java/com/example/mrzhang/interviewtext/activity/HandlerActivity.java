@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-
 import com.example.mrzhang.interviewtext.R;
 
 public class HandlerActivity extends AppCompatActivity{
@@ -31,18 +30,24 @@ public class HandlerActivity extends AppCompatActivity{
     }
 
     private void customTimeThread(View view){
-        new Thread(){
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                try {
-                    Log.e("耗时子线程的Name是:", Thread.currentThread().getName());
-                    Thread.sleep(5000);
-                    handler.sendEmptyMessage(MSG_FINISH);
-                } catch (InterruptedException error) {
-                    Log.e("ThreadError:", error.getLocalizedMessage());
-                    error.printStackTrace();
-                }
+            public void onClick(View v) {
+                new Thread(){
+                    @Override
+                    public void run() {
+                        try {
+                            Log.e("耗时子线程的Name是:", Thread.currentThread().getName());
+                            Thread.sleep(5000);
+                            handler.sendEmptyMessage(MSG_FINISH);
+                        } catch (InterruptedException error) {
+                            Log.e("ThreadError:", error.getLocalizedMessage());
+                            error.printStackTrace();
+                        }
+                    }
+                }.start();
             }
-        }.start();
+        });
+        view.setEnabled(false);
     }
 }

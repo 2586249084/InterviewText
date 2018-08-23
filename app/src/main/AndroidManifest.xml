@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".activity.BroadcastReceiverActivity" />
         <activity android:name=".activity.HandlerActivity" />
+        <activity android:name=".activity.UserLoginActivity" />
 
         <service android:name=".service.MyService" />
         <service android:name=".service.service.MyAidlService" />
