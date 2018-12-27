@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
+// 顶级构建文件，您可以在其中为所有子项目/模块添加常见的配置选项
 buildscript {
     
     repositories {
@@ -8,20 +8,92 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
-
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
+        flatDir{
+            dirs 'libs'
+        }
         google()
         jcenter()
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    compileSdkVersion 28
+    buildToolsVersion '27.0.3'
+    // 秘钥相关设置
+    signingConfigs {
+        release {
+            storeFile file("keystore/superMusic")
+            storePassword "19960716"
+            keyAlias "supermusic"
+            keyPassword "19960716"
+        }
+        debug {
+            storeFile file("keystore/superMusic")
+            storePassword "19960716"
+            keyAlias "supermusic"
+            keyPassword "19960716"
+        }
+    }
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        applicationId "com.mrzhang.interview"
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+        }
+        // Move the tests to tests/java, tests/res, etc...
+        // 将测试移动到tests/java,tests/res,等…
+        androidTest.setRoot('tests')
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    // 以下方法是为了避免报出警报，可根据AS版本自行设置
+    /*lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }*/
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 }
